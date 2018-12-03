@@ -4,11 +4,6 @@
   <title>Rock Paper Scissors</title>
 </head>
 <body>
-    <div id="container">
-        <button id="rock">Rock</button>
-        <button id="paper">Paper</button>
-        <button id="scissors">Scissors</button>
-    </div>
   <script>
     function computerPlay() {
         const options = ['rock', 'paper', 'scissors'];
@@ -41,6 +36,7 @@
         let computerScore = 0;
         for (let round = 1; round < 6; round++) {
             console.log(`Round ${round}`);
+            playerSelection = prompt("What do you choose?");
             computerSelection = computerPlay();
             message = playRound(playerSelection, computerSelection);
             console.log(message);
@@ -49,7 +45,7 @@
             } else if (message.search("lose") > 1) {
                 computerScore += 1
             }
-        }
+        };
         console.log("Game over!")
         if (playerScore > computerScore) {
             console.log(`You won! Final score: ${playerScore} to ${computerScore}`)
@@ -60,14 +56,8 @@
         }        
     }
     
-    const buttons = document.querySelectorAll('#container');
-    buttons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            console.log(button.id);
-            console.log(playRound(button.id, computerPlay()));
-        })
-    })
+    game()
 
-  </script>
+  </script>;
 </body>
 </html>
