@@ -40,7 +40,6 @@
     }
 
     const container = document.querySelector("#container");
-    const buttons = document.querySelectorAll("button");
     const results = document.querySelector('#results');
     let message = document.createElement('p');
     let score = document.createElement('h2');
@@ -53,12 +52,12 @@
     let computerScore = 0;
 
     
-        // Play a round whenever the user clicks on a button
-    buttons.forEach((button) => {
-        button.addEventListener('click', (e) => {
+    // Play the game, starting a round whenever the user clicks on a button
+    function playGame(event) {
+        if (event.target.nodeName == "BUTTON") {
             results.removeChild(message);
             results.removeChild(score);
-            let roundOutput = playRound(button.id, computerPlay());          
+            let roundOutput = playRound(event.target.id, computerPlay());          
             if (roundOutput.search("win") > 1) {
                 playerScore += 1
             } else if (roundOutput.search("lose") > 1) {
@@ -69,9 +68,11 @@
 
             // Whenever a score reaches 5, end the game
             if (playerScore < 5 && computerScore < 5) {
+                // Before the game ends, output the results of the round
                 message.textContent = roundOutput;
                 results.appendChild(message);
             } else {
+                // At the end of the game, show "Game over." message
                 if (playerScore > computerScore) {
                     message.textContent = "Game over. You won!"
                 } else {
@@ -79,16 +80,27 @@
                 }
                 results.appendChild(message);
 
-                // To end the game, remove the buttons
+                // At the end of the game, remove the selection buttons
                 rockButton = document.getElementById("rock");
                 paperButton = document.getElementById("paper");
                 scissorsButton = document.getElementById("scissors");
                 container.removeChild(rockButton);
                 container.removeChild(paperButton);
                 container.removeChild(scissorsButton);
+
+                // Add a button to play again
+                let retryButton = document.createElement("button");
+                retryButton.textContent = "Play again?";
+                container.appendChild(retryButton);
+                retryButton.addEventListener("click", e => {
+                    location.reload();
+                })
+
             }
-        });
-    });
+        }
+    }
+
+    container.addEventListener("click", playGame)
  
   </script>
 </body>
