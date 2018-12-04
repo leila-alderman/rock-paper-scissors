@@ -39,44 +39,56 @@
         }
     }
 
+    const container = document.querySelector("#container");
     const buttons = document.querySelectorAll("button");
     const results = document.querySelector('#results');
     let message = document.createElement('p');
     let score = document.createElement('h2');
     message.textContent = "Click on a button to start playing.";
     score.textContent = `Player's score: 0 Computer's score: 0`;
-    results.appendChild(message);
     results.appendChild(score);
+    results.appendChild(message);
 
     let playerScore = 0;
     let computerScore = 0;
 
-    if (playerScore < 5 && computerScore < 5) {
+    
         // Play a round whenever the user clicks on a button
-        buttons.forEach((button) => {
-            button.addEventListener('click', (e) => {
-                results.removeChild(message);
-                results.removeChild(score);
-                let roundOutput = playRound(button.id, computerPlay());          
+    buttons.forEach((button) => {
+        button.addEventListener('click', (e) => {
+            results.removeChild(message);
+            results.removeChild(score);
+            let roundOutput = playRound(button.id, computerPlay());          
+            if (roundOutput.search("win") > 1) {
+                playerScore += 1
+            } else if (roundOutput.search("lose") > 1) {
+                computerScore += 1
+            }
+            score.textContent = `Player's score: ${playerScore} Computer's score: ${computerScore}`;
+            results.appendChild(score);
+
+            // Whenever a score reaches 5, end the game
+            if (playerScore < 5 && computerScore < 5) {
                 message.textContent = roundOutput;
                 results.appendChild(message);
-                if (roundOutput.search("win") > 1) {
-                    playerScore += 1
-                } else if (roundOutput.search("lose") > 1) {
-                    computerScore += 1
+            } else {
+                if (playerScore > computerScore) {
+                    message.textContent = "Game over. You won!"
+                } else {
+                    message.textContent = "Game over. You lost."
                 }
-                score.textContent = `Player's score: ${playerScore} Computer's score: ${computerScore}`;
-                results.appendChild(score);
-            });
+                results.appendChild(message);
+
+                // To end the game, remove the buttons
+                rockButton = document.getElementById("rock");
+                paperButton = document.getElementById("paper");
+                scissorsButton = document.getElementById("scissors");
+                container.removeChild(rockButton);
+                container.removeChild(paperButton);
+                container.removeChild(scissorsButton);
+            }
         });
-    } else {
-        results.removeChild(message);
-        if (playerScore > computerScore) {
-            message.textContent = "Game over. You won!"
-        } else {
-            message.textContent = "Game over. You lost."
-        }
-    }
+    });
  
   </script>
 </body>
